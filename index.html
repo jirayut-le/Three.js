@@ -6,12 +6,43 @@
 		<style>
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
-		</style>
+            .container{ width: 100%; height: 100%;position :absolute;top: 0;left: 0 }
+        </style>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
 	</head>
 	<body>
+        <div class="container"></div>
 		<script src="js/three.js"></script>
 		<script>
-			// Our Javascript will go here.
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight);
+
+            jQuery('.container').append(renderer.domElement);
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+            camera.position.z = 5;
+
+            var light = new THREE.AmbientLight( 0xffffff , 0.5);
+            var direclight = new THREE.DirectionalLight( 0x00ff00, 0.5);
+
+            var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+            var material = new THREE.MeshPhongMaterial( {color: 0x00ffdd} );
+            var cube = new THREE.Mesh( geometry, material );
+
+            scene.add( cube );
+            scene.add( light );
+            scene.add( direclight );
+
+            function animate(){
+
+                cube.rotation.z += 1/20;
+                cube.rotation.y += 1/30;
+                requestAnimationFrame( animate );
+                renderer.render( scene, camera);
+            }
+            animate();
+
 		</script>
 	</body>
 </html>
